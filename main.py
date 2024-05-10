@@ -6,46 +6,33 @@ import random
 
 pygame.init()
 
-display_width = 800
-display_height = 600
+display_width = 900
+display_height = 700
 screen = pygame.display.set_mode((display_width, display_height))
 
-window = Tk()
-window.geometry("800x600")
+# window = Tk()
+# window.geometry("800x600")
 
+font = pygame.font.SysFont('arial', 40)
+title_font = pygame.font.SysFont('Times New Roman', 60)
+title = title_font.render('World of Wonders', True, (255, 255, 255))
+start_button = font.render('Start', True, (155, 155, 155))
 
 stop = False
-button_rect = pygame.Rect(125, 125, 150, 50)
+button_rect = pygame.Rect(370, 250, 250, 100)
 button_surface = pygame.Surface((150, 50))
-# def ending_button():
-#     global stop
-#     stop = True
-#
-# def starting_button():
-#     global stop
-#     stop = False
-#
-# def button_starting():
-#     t = threading.Thread(target = starting_button)
-#     t.start()
+
+button_rect_two = pygame.Rect(370, 250, 250, 1000)
+button_surface_two = pygame.Surface((150, 50))
+
+start_text = font.render("Start", True, (0, 0, 0))
+start_text_rect = start_text.get_rect(center=(button_surface.get_width()/2, button_surface.get_height()/2))
+
+end_text = font.render("End", True, (0,0,0))
+end_text_rect = end_text.get_rect(center=(button_surface_two.get_width()/2, button_surface_two.get_height()/2))
 
 def start_menu():
     screen.fill((0,0,0))
-    font = pygame.font.SysFont('arial', 40)
-    title_font = pygame.font.SysFont('Times New Roman', 60)
-    title = title_font.render('World of Wonders', True, (255, 255, 255))
-    start_button = font.render('Start', True, (255, 255, 255))
-    # the_start = Button(window, text="START", padx=30, pady=20, command=button_starting)
-    # the_start.grid(columnspan=1, row=1, column=0)
-    # quit_button = font.render('Quit', True, (255, 255, 255))
-    # screen.blit(title, ((display_width/2) - (title.get_width()/2), ((display_height/2) - (title.get_height()/2)) - 50))
-    # screen.blit(start_button, ((display_width/2) - (start_button.get_width()/2), (display_height/2) + (start_button.get_height()/2)))
-    # screen.blit(quit_button,  ((display_width/2) - (quit_button.get_width()/2), ((display_height/2) - (quit_button.get_height()/2)) + 90))
-    # the_start = Button(window, text="START", padx=30, pady=20, command=button_starting)
-    # the_start.grid(columnspan=1, row=1, column=0)
-    # the_end = Button(window, text="EXIT", padx=33, pady=22, command=ending_button)
-    # the_end.grid(row=2, column=0)
-    # window.mainloop()
     pygame.display.update()
 
 game_start = "start_menu"
@@ -63,31 +50,27 @@ while True:
         # Check if the mouse is over the button. This will create the button hover effect
         if button_rect.collidepoint(pygame.mouse.get_pos()):
             pygame.draw.rect(button_surface, (127, 255, 212), (1, 1, 148, 48))
+            pygame.draw.rect(button_surface_two, (127, 255, 212), (3, 3, 248, 148))
         else:
             pygame.draw.rect(button_surface, (0, 0, 0), (0, 0, 150, 50))
             pygame.draw.rect(button_surface, (255, 255, 255), (1, 1, 148, 48))
             pygame.draw.rect(button_surface, (0, 0, 0), (1, 1, 148, 1), 2)
             pygame.draw.rect(button_surface, (0, 100, 0), (1, 48, 148, 10), 2)
+            pygame.draw.rect(button_surface_two, (0, 0, 0), (0, 0, 350, 200))
+            pygame.draw.rect(button_surface_two, (255, 255, 255), (3, 3, 248, 148))
+            pygame.draw.rect(button_surface_two, (0, 0, 0), (3, 3, 248, 3), 3)
+            pygame.draw.rect(button_surface_two, (0, 100, 0), (3, 148, 248, 30), 4)
 
-    # the_start = Button(window, text = "START", padx = 30, pady = 20, command = button_starting)
-        # the_start.grid(columnspan = 1, row = 1, column = 0)
-        # the_end = Button(window, text = "EXIT", padx = 33, pady = 22, command = ending_button)
-        # the_end.grid(row = 2, column = 0)
-        # window.mainloop()
 
-    # if game_start == "game":
-    #     keys = pygame.key.get_pressed()
-    # if game_start == "start_menu":
-    #     keys = pygame.key.get_pressed()
-    #     if keys[pygame.K_SPACE]:
-    #
-    #         game_start = "game "
-    #         game_over = False
+
+
  # Shwo the button text
- #    button_surface.blit(text, text_rect)
+    button_surface.blit(start_text, start_text_rect)
+    button_surface_two.blit(end_text, end_text_rect)
 
  # Draw the button on the screen
     screen.blit(button_surface, (button_rect.x, button_rect.y))
+    screen.blit(button_surface_two, (button_rect_two.x, button_rect.y))
 
  # Update the game state
     pygame.display.update()
