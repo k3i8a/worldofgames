@@ -1,29 +1,47 @@
 import pygame
-from tkinter import *
-import threading
-import time
 import random
 
-pygame.init()
+# from rectangle import rectangles
+
+# button_rect = rectangles(100, 100, 200, 200)
+# button_rect_two = rectangles(370, 350, 350, 2000)
+# button_surface = pygame.Surface((150, 50))
+# button_surface_two = pygame.Surface((150, 50))
+
 
 display_width = 900
 display_height = 700
 screen = pygame.display.set_mode((display_width, display_height))
 
-# window = Tk()
-# window.geometry("800x600")
+#
+# Font = pygame.font.SysFont('arial', 40)
+# title_font = pygame.font.SysFont('Times New Roman', 60)
+# title = title_font.render('World of Wonders', True, (255, 255, 255))
+# start_button = font.render('Start', True, (155, 155, 155))
 
-font = pygame.font.SysFont('arial', 40)
-title_font = pygame.font.SysFont('Times New Roman', 60)
-title = title_font.render('World of Wonders', True, (255, 255, 255))
-start_button = font.render('Start', True, (155, 155, 155))
+def start_menu():
+    screen.fill((0,0,0))
+    # start_text = font.render("Start", True, (0, 0, 0))
+    # start_text_rect = start_text.get_rect(center=(button_surface.get_width() / 2, button_surface.get_height() / 2))
+    # end_text = font.render("End", True, (0, 0, 0))
+    # end_text_rect = end_text.get_rect(center=(button_surface_two.get_width() / 2, button_surface_two.get_height() / 2))
+
+
+
+
 
 stop = False
 button_rect = pygame.Rect(370, 250, 250, 100)
 button_surface = pygame.Surface((150, 50))
 
-button_rect_two = pygame.Rect(370, 250, 250, 1000)
+button_rect_two = pygame.Rect(370, 350, 350, 2000)
 button_surface_two = pygame.Surface((150, 50))
+
+
+font = pygame.font.SysFont('Arial', 40)
+title_font = pygame.font.SysFont('Times New Roman', 60)
+title = title_font.render('World of Wonders', True, (255, 255, 255))
+start_button = font.render('Start', True, (155, 155, 155))
 
 start_text = font.render("Start", True, (0, 0, 0))
 start_text_rect = start_text.get_rect(center=(button_surface.get_width()/2, button_surface.get_height()/2))
@@ -31,9 +49,6 @@ start_text_rect = start_text.get_rect(center=(button_surface.get_width()/2, butt
 end_text = font.render("End", True, (0,0,0))
 end_text_rect = end_text.get_rect(center=(button_surface_two.get_width()/2, button_surface_two.get_height()/2))
 
-def start_menu():
-    screen.fill((0,0,0))
-    pygame.display.update()
 
 game_start = "start_menu"
 while True:
