@@ -3,39 +3,22 @@ import random
 
 # from rectangle import rectangles
 
-# button_rect = rectangles(100, 100, 200, 200)
-# button_rect_two = rectangles(370, 350, 350, 2000)
-# button_surface = pygame.Surface((150, 50))
-# button_surface_two = pygame.Surface((150, 50))
-
 
 display_width = 900
 display_height = 700
 screen = pygame.display.set_mode((display_width, display_height))
 
-#
-# Font = pygame.font.SysFont('arial', 40)
-# title_font = pygame.font.SysFont('Times New Roman', 60)
-# title = title_font.render('World of Wonders', True, (255, 255, 255))
-# start_button = font.render('Start', True, (155, 155, 155))
 
-def start_menu():
-    screen.fill((0,0,0))
-    # start_text = font.render("Start", True, (0, 0, 0))
-    # start_text_rect = start_text.get_rect(center=(button_surface.get_width() / 2, button_surface.get_height() / 2))
-    # end_text = font.render("End", True, (0, 0, 0))
-    # end_text_rect = end_text.get_rect(center=(button_surface_two.get_width() / 2, button_surface_two.get_height() / 2))
-
-
-
+pygame.init()
+pygame.font.init()
 
 
 stop = False
 button_rect = pygame.Rect(370, 250, 250, 100)
 button_surface = pygame.Surface((150, 50))
 
-button_rect_two = pygame.Rect(370, 350, 350, 2000)
-button_surface_two = pygame.Surface((150, 50))
+button_rect_two = pygame.Rect(370, 250, 240, 100)
+button_surface_two = pygame.Surface((300, 100))
 
 
 font = pygame.font.SysFont('Arial', 40)
@@ -43,11 +26,13 @@ title_font = pygame.font.SysFont('Times New Roman', 60)
 title = title_font.render('World of Wonders', True, (255, 255, 255))
 start_button = font.render('Start', True, (155, 155, 155))
 
-start_text = font.render("Start", True, (0, 0, 0))
-start_text_rect = start_text.get_rect(center=(button_surface.get_width()/2, button_surface.get_height()/2))
+start_text = "Start"
+start_message = font.render(start_text, True, (225, 225, 225))
+# start_text_rect = start_text.get_rect(center=(button_surface.get_width()/2, button_surface.get_height()/2))
 
-end_text = font.render("End", True, (0,0,0))
-end_text_rect = end_text.get_rect(center=(button_surface_two.get_width()/2, button_surface_two.get_height()/2))
+end_text = "End"
+ending_message = font.render(end_text, True, (225, 255, 255))
+# end_text_rect = end_text.get_rect(center=((button_surface.get_width()/2 - 100), (button_surface.get_height()/2) - 100))
 
 
 game_start = "start_menu"
@@ -80,12 +65,12 @@ while True:
 
 
  # Shwo the button text
-    button_surface.blit(start_text, start_text_rect)
-    button_surface_two.blit(end_text, end_text_rect)
+    screen.blit(start_message, (button_surface.get_width()/2, button_surface.get_height()/2))
+    # screen.blit(ending_message, (button_surface_two.get_width()/2), (button_surface_two.get_height()/2))
 
  # Draw the button on the screen
-    screen.blit(button_surface, (button_rect.x, button_rect.y))
-    screen.blit(button_surface_two, (button_rect_two.x, button_rect.y))
+ #    screen.blit(button_surface, (button_rect.x, button_rect.y))
+ #    screen.blit(button_surface_two, (button_rect_two.x, button_rect.y))
 
  # Update the game state
     pygame.display.update()
