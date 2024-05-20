@@ -1,7 +1,7 @@
 import pygame
 import random
 
-# from rectangle import rectangles
+from rectangle import rectangles
 
 
 display_width = 900
@@ -13,11 +13,11 @@ pygame.init()
 pygame.font.init()
 
 
-stop = False
+
 button_rect = pygame.Rect(370, 250, 250, 100)
 button_surface = pygame.Surface((150, 50))
 
-button_rect_two = pygame.Rect(370, 250, 240, 100)
+button_rect_two = pygame.Rect(370, 250, 250, 100)
 button_surface_two = pygame.Surface((300, 100))
 
 
@@ -28,49 +28,40 @@ start_button = font.render('Start', True, (155, 155, 155))
 
 start_text = "Start"
 start_message = font.render(start_text, True, (225, 225, 225))
-# start_text_rect = start_text.get_rect(center=(button_surface.get_width()/2, button_surface.get_height()/2))
+start_message_rect = pygame.Rect(390, 200, start_message.get_width() + 8, start_message.get_height() - 5)
+
 
 end_text = "End"
 ending_message = font.render(end_text, True, (225, 255, 255))
-# end_text_rect = end_text.get_rect(center=((button_surface.get_width()/2 - 100), (button_surface.get_height()/2) - 100))
+end_message_rect = pygame.Rect(400, 400, ending_message.get_width() + 8, ending_message.get_height() - 5)
 
-
-game_start = "start_menu"
-while True:
+stop = True
+starting_menu = True
+while stop == True and starting_menu == True:
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
             pygame.quit()
             quit()
             # Check for the mouse button down event
-            if events.type == pygame.MOUSEBUTTONDOWN and events.button == 1:
-                # Call the on_mouse_button_down() function
-                if button_rect.collidepoint(events.pos):
-                    print("Button clicked!")
-
-        # Check if the mouse is over the button. This will create the button hover effect
-        if button_rect.collidepoint(pygame.mouse.get_pos()):
-            pygame.draw.rect(button_surface, (127, 255, 212), (1, 1, 148, 48))
-            pygame.draw.rect(button_surface_two, (127, 255, 212), (3, 3, 248, 148))
-        else:
-            pygame.draw.rect(button_surface, (0, 0, 0), (0, 0, 150, 50))
-            pygame.draw.rect(button_surface, (255, 255, 255), (1, 1, 148, 48))
-            pygame.draw.rect(button_surface, (0, 0, 0), (1, 1, 148, 1), 2)
-            pygame.draw.rect(button_surface, (0, 100, 0), (1, 48, 148, 10), 2)
-            pygame.draw.rect(button_surface_two, (0, 0, 0), (0, 0, 350, 200))
-            pygame.draw.rect(button_surface_two, (255, 255, 255), (3, 3, 248, 148))
-            pygame.draw.rect(button_surface_two, (0, 0, 0), (3, 3, 248, 3), 3)
-            pygame.draw.rect(button_surface_two, (0, 100, 0), (3, 148, 248, 30), 4)
-
+        if events.type == pygame.MOUSEBUTTONDOWN and start_message_rect.collidepoint(events.pos):
+            print("Start button clicked")
+            stop = True
+        if events.type == pygame.MOUSEBUTTONDOWN and end_message_rect.collidepoint(events.pos):
+            print("End button clicked")
+            stop = False
+        if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos))):
+            starting_menu = False
 
 
 
  # Shwo the button text
-    screen.blit(start_message, (button_surface.get_width()/2, button_surface.get_height()/2))
-    # screen.blit(ending_message, (button_surface_two.get_width()/2), (button_surface_two.get_height()/2))
 
- # Draw the button on the screen
- #    screen.blit(button_surface, (button_rect.x, button_rect.y))
- #    screen.blit(button_surface_two, (button_rect_two.x, button_rect.y))
+    screen.blit(start_message, (390,200))
+    screen.blit(ending_message,(400, 400))
+    start_message.get_rect().move(390, 200)
+    ending_message.get_rect().move(400,400)
+    pygame.draw.rect(screen, (255,255,255), start_message_rect, 2)
+    pygame.draw.rect(screen, (255, 255, 255), end_message_rect, 2)
 
  # Update the game state
     pygame.display.update()

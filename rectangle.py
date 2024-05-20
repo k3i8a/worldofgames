@@ -9,10 +9,6 @@ class rectangles:
         self.width = int(width)
         self.height = int(height)
 
-    def rectdraw(self):
+    def rect_draw(self):
         return self(self.x, self.y, self.width, self.height)
-
-
-button_rect_one = rectangles(100, 100, 200, 200)
-button_rect_two = rectangles(370, 350, 350, 2000)
 
