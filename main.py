@@ -12,7 +12,8 @@ screen = pygame.display.set_mode((display_width, display_height))
 pygame.init()
 pygame.font.init()
 
-
+background = pygame.image.load("village.jpg")
+picture = pygame.transform.scale(background, (900, 700))
 
 button_rect = pygame.Rect(370, 250, 250, 100)
 button_surface = pygame.Surface((150, 50))
@@ -37,7 +38,7 @@ end_message_rect = pygame.Rect(400, 400, ending_message.get_width() + 8, ending_
 
 stop = True
 starting_menu = True
-while stop == True and starting_menu == True:
+while stop == True:
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
             pygame.quit()
@@ -46,22 +47,28 @@ while stop == True and starting_menu == True:
         if events.type == pygame.MOUSEBUTTONDOWN and start_message_rect.collidepoint(events.pos):
             print("Start button clicked")
             stop = True
+            starting_menu = False
+
         if events.type == pygame.MOUSEBUTTONDOWN and end_message_rect.collidepoint(events.pos):
             print("End button clicked")
             stop = False
-        if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos))):
+        if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
 
 
-
  # Shwo the button text
+    if starting_menu == True and stop == True:
+        screen.blit(start_message, (390,200))
+        start_message.get_rect().move(390, 200)
+        pygame.draw.rect(screen, (255,255,255), start_message_rect, 2)
 
-    screen.blit(start_message, (390,200))
-    screen.blit(ending_message,(400, 400))
-    start_message.get_rect().move(390, 200)
-    ending_message.get_rect().move(400,400)
-    pygame.draw.rect(screen, (255,255,255), start_message_rect, 2)
-    pygame.draw.rect(screen, (255, 255, 255), end_message_rect, 2)
+        screen.blit(ending_message, (400, 400))
+        ending_message.get_rect().move(400, 400)
+        pygame.draw.rect(screen, (255, 255, 255), end_message_rect, 2)
+
+    if starting_menu == False:
+        screen.blit(picture, (0,0))
+
 
  # Update the game state
     pygame.display.update()
