@@ -1,12 +1,11 @@
 import pygame
-import random
-
-from rectangle import rectangles
+from Snowman import snowman
 
 
 display_width = 900
 display_height = 700
 screen = pygame.display.set_mode((display_width, display_height))
+
 
 
 pygame.init()
@@ -15,12 +14,17 @@ pygame.font.init()
 background = pygame.image.load("village.jpg")
 picture = pygame.transform.scale(background, (900, 700))
 
+second_background = pygame.image.load("village_2.jpg")
+second_picture = pygame.transform.scale(background, (900,700))
+
 button_rect = pygame.Rect(370, 250, 250, 100)
 button_surface = pygame.Surface((150, 50))
 
 button_rect_two = pygame.Rect(370, 250, 250, 100)
 button_surface_two = pygame.Surface((300, 100))
 
+
+s = snowman(40,40)
 
 font = pygame.font.SysFont('Arial', 40)
 title_font = pygame.font.SysFont('Times New Roman', 60)
@@ -56,6 +60,7 @@ while stop == True:
             starting_menu = False
 
 
+
  # Shwo the button text
     if starting_menu == True and stop == True:
         screen.blit(start_message, (390,200))
@@ -68,6 +73,7 @@ while stop == True:
 
     if starting_menu == False:
         screen.blit(picture, (0,0))
+        screen.blit(s, (10,10))
 
 
  # Update the game state
