@@ -1,6 +1,6 @@
 import pygame
-from Snowman import snowman
-
+from snowaman import snowman
+# from icecream import ice_cream
 
 display_width = 900
 display_height = 700
@@ -24,7 +24,8 @@ button_rect_two = pygame.Rect(370, 250, 250, 100)
 button_surface_two = pygame.Surface((300, 100))
 
 
-s = snowman(40,40)
+s = snowman(200,400)
+# cream = ice_cream(400,400)
 
 font = pygame.font.SysFont('Arial', 40)
 title_font = pygame.font.SysFont('Times New Roman', 60)
@@ -52,6 +53,14 @@ while stop == True:
             print("Start button clicked")
             stop = True
             starting_menu = False
+            if starting_menu == False:
+                screen.blit(picture, (0, 0))
+                screen.blit(s.image, s.rect)
+                # screen.blit(cream.image, cream.rect)
+            if events.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
+                if s.rect.collidepoint(pos):
+                    print("User clicked something!")
 
         if events.type == pygame.MOUSEBUTTONDOWN and end_message_rect.collidepoint(events.pos):
             print("End button clicked")
@@ -61,8 +70,12 @@ while stop == True:
 
 
 
+
+
+
  # Shwo the button text
     if starting_menu == True and stop == True:
+        screen.blit(title, (200,100))
         screen.blit(start_message, (390,200))
         start_message.get_rect().move(390, 200)
         pygame.draw.rect(screen, (255,255,255), start_message_rect, 2)
@@ -71,9 +84,10 @@ while stop == True:
         ending_message.get_rect().move(400, 400)
         pygame.draw.rect(screen, (255, 255, 255), end_message_rect, 2)
 
-    if starting_menu == False:
-        screen.blit(picture, (0,0))
-        screen.blit(s, (10,10))
+    # if starting_menu == False:
+    #     screen.blit(picture, (0,0))
+    #     screen.blit(s.image, s.rect)
+    #     screen.blit(cream.image, cream.rect)
 
 
  # Update the game state
