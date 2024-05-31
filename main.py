@@ -1,6 +1,6 @@
 import pygame
 from snowaman import snowman
-# from icecream import ice_cream
+from icecream import ice_cream
 
 display_width = 900
 display_height = 700
@@ -25,7 +25,8 @@ button_surface_two = pygame.Surface((300, 100))
 
 
 s = snowman(200,400)
-# cream = ice_cream(400,400)
+snowman_rect = pygame.Rect(370, 250, 250, 100)
+cream = ice_cream(400,400)
 
 font = pygame.font.SysFont('Arial', 40)
 title_font = pygame.font.SysFont('Times New Roman', 60)
@@ -43,6 +44,8 @@ end_message_rect = pygame.Rect(400, 400, ending_message.get_width() + 8, ending_
 
 stop = True
 starting_menu = True
+starting_button = False
+next_page = True
 while stop == True:
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
@@ -52,21 +55,17 @@ while stop == True:
         if events.type == pygame.MOUSEBUTTONDOWN and start_message_rect.collidepoint(events.pos):
             print("Start button clicked")
             stop = True
-            starting_menu = False
-            if starting_menu == False:
-                screen.blit(picture, (0, 0))
-                screen.blit(s.image, s.rect)
-                # screen.blit(cream.image, cream.rect)
-            if events.type == pygame.MOUSEBUTTONUP:
-                pos = pygame.mouse.get_pos()
-                if s.rect.collidepoint(pos):
-                    print("User clicked something!")
-
+            # starting_menu = False
         if events.type == pygame.MOUSEBUTTONDOWN and end_message_rect.collidepoint(events.pos):
             print("End button clicked")
             stop = False
         if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
+        if (events.type == pygame.MOUSEBUTTONDOWN and s.rect.collidepoint(events.pos) and starting_menu == False) or (events.type == pygame.MOUSEBUTTONDOWN and cream.rect.collidepoint(events.pos) and starting_menu == False):
+            print("User clicked something!")
+            next_page = True
+
+
 
 
 
@@ -84,10 +83,10 @@ while stop == True:
         ending_message.get_rect().move(400, 400)
         pygame.draw.rect(screen, (255, 255, 255), end_message_rect, 2)
 
-    # if starting_menu == False:
-    #     screen.blit(picture, (0,0))
-    #     screen.blit(s.image, s.rect)
-    #     screen.blit(cream.image, cream.rect)
+    if starting_menu == False:
+        screen.blit(picture, (0,0))
+        screen.blit(s.image, s.rect)
+        screen.blit(cream.image, cream.rect)
 
 
  # Update the game state
