@@ -15,7 +15,7 @@ background = pygame.image.load("village.jpg")
 picture = pygame.transform.scale(background, (900, 700))
 
 second_background = pygame.image.load("village_2.jpg")
-second_picture = pygame.transform.scale(background, (900,700))
+second_picture = pygame.transform.scale(second_background, (900,700))
 
 button_rect = pygame.Rect(370, 250, 250, 100)
 button_surface = pygame.Surface((150, 50))
@@ -45,7 +45,8 @@ end_message_rect = pygame.Rect(400, 400, ending_message.get_width() + 8, ending_
 stop = True
 starting_menu = True
 starting_button = False
-next_page = True
+next_page = False
+icecream_page = False
 while stop == True:
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
@@ -61,9 +62,14 @@ while stop == True:
             stop = False
         if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
-        if (events.type == pygame.MOUSEBUTTONDOWN and s.rect.collidepoint(events.pos) and starting_menu == False) or (events.type == pygame.MOUSEBUTTONDOWN and cream.rect.collidepoint(events.pos) and starting_menu == False):
+        if (events.type == pygame.MOUSEBUTTONDOWN and s.rect.collidepoint(events.pos) and starting_menu == False):
             print("User clicked something!")
             next_page = True
+        if (events.type == pygame.MOUSEBUTTONDOWN and cream.rect.collidepoint(events.pos) and starting_menu == False):
+            icecream_page = True
+            # if next_page == True:
+            #
+
 
 
 
@@ -86,6 +92,14 @@ while stop == True:
     if starting_menu == False:
         screen.blit(picture, (0,0))
         screen.blit(s.image, s.rect)
+        screen.blit(cream.image, cream.rect)
+        # screen.blit(second_picture, (0,0))
+
+    if next_page == True:
+        screen.blit(second_picture, (0,0))
+        screen.blit(s.image, s.rect)
+    if icecream_page == True:
+        screen.blit(second_picture, (0, 0))
         screen.blit(cream.image, cream.rect)
 
 
