@@ -5,8 +5,11 @@ from icecream import ice_cream
 display_width = 900
 display_height = 700
 screen = pygame.display.set_mode((display_width, display_height))
-
-
+jump_height = 20
+gravity = 1
+y_velocity = jump_height
+jumping = False
+jumpings = False
 
 pygame.init()
 pygame.font.init()
@@ -25,8 +28,15 @@ button_surface_two = pygame.Surface((300, 100))
 
 
 s = snowman(200,400)
+sm_x, sm_y = 200, 400
 snowman_rect = pygame.Rect(370, 250, 250, 100)
 cream = ice_cream(400,400)
+c_x, c_y = 200, 400
+STANDING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200,400))
+JUMPING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200, 400))
+STANDING_SURFACE_ICECREAM = pygame.transform.scale(pygame.image.load("icecream.png"), (200, 400)
+JUMPING_SURFACE_ICECREAM = pygame.transform.scale(pygame.image.load("icecream.png"), (200,400))
+
 
 font = pygame.font.SysFont('Arial', 40)
 title_font = pygame.font.SysFont('Times New Roman', 60)
@@ -47,11 +57,14 @@ starting_menu = True
 starting_button = False
 next_page = False
 icecream_page = False
+count = 0
+counts = 0
 while stop == True:
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
             pygame.quit()
             quit()
+
             # Check for the mouse button down event
         if events.type == pygame.MOUSEBUTTONDOWN and start_message_rect.collidepoint(events.pos):
             print("Start button clicked")
@@ -65,10 +78,44 @@ while stop == True:
         if (events.type == pygame.MOUSEBUTTONDOWN and s.rect.collidepoint(events.pos) and starting_menu == False):
             print("User clicked something!")
             next_page = True
+            if (next_page == True):
+                    if count == 0:
+                        jumping = True
+                        count += 1
+                    # jumping = True
+                        print(jumping)
+    if jumping:
+        print("I can jump")
+        sm_y -= y_velocity
+        y_velocity -= gravity
+    if sm_y <= jump_height:
+        print("hell")
+        jumping = False
+        sm_y = jump_height
+        s.rect = JUMPING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
+                        # screen.blit(JUMPING_SURFACE_SNOWMAN, s.rect)
+    else:
+        s.rect = STANDING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
+            # screen.blit(STANDING_SURFACE_SNOWMAN, s.rect)
         if (events.type == pygame.MOUSEBUTTONDOWN and cream.rect.collidepoint(events.pos) and starting_menu == False):
+            print("User clicked something!")
             icecream_page = True
-            # if next_page == True:
-            #
+            if (icecream_page == True):
+                if counts == 0:
+                    jumpings = True
+                    counts += 1
+                    print(jumpings)
+    if jumpings:
+        print("I can jump")
+        c_x -= y_velocity
+        y_velocity -= gravity
+    if c_x <= jump_height:
+        print("ok")
+        jumpings = False
+        c_y = jump_height
+        cream.rect = JUMPING_SURFACE_
+
+
 
 
 
@@ -97,10 +144,13 @@ while stop == True:
 
     if next_page == True:
         screen.blit(second_picture, (0,0))
-        screen.blit(s.image, s.rect)
+        # screen.blit(s.image, s.rect)
     if icecream_page == True:
         screen.blit(second_picture, (0, 0))
-        screen.blit(cream.image, cream.rect)
+        # screen.blit(cream.image, cream.rect)
+
+    if jumping == True and next_page == True:
+        screen.blit(JUMPING_SURFACE_SNOWMAN, s.rect)
 
 
  # Update the game state
