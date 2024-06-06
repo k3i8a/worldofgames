@@ -1,15 +1,19 @@
 import pygame
 from snowaman import snowman
 from icecream import ice_cream
+from penguin import penguins
 
 display_width = 900
 display_height = 700
 screen = pygame.display.set_mode((display_width, display_height))
-jump_height = 20
+
+jump_height_sm = 20
 gravity = 1
-y_velocity = jump_height
+snowman_velocity = jump_height_sm
+jump_height_p = 20
+p_velocity = jump_height_p
 jumping = False
-jumpings = False
+jump = False
 
 pygame.init()
 pygame.font.init()
@@ -26,16 +30,26 @@ button_surface = pygame.Surface((150, 50))
 button_rect_two = pygame.Rect(370, 250, 250, 100)
 button_surface_two = pygame.Surface((300, 100))
 
+p = penguins(200,400)
+p_x, p_y = 200, 400
+p_rect = pygame.Rect(370, 250, 250, 100)
+# snowman_rect = pygame.Rect(370, 250, 250, 100)
+STANDING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("Penguin.png"), (200,400))
+JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("Penguinjumping.png"), (200, 400))
+penguin_page = False
 
+#snowman
 s = snowman(200,400)
 sm_x, sm_y = 200, 400
 snowman_rect = pygame.Rect(370, 250, 250, 100)
-cream = ice_cream(400,400)
-c_x, c_y = 200, 400
 STANDING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200,400))
 JUMPING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200, 400))
-STANDING_SURFACE_ICECREAM = pygame.transform.scale(pygame.image.load("icecream.png"), (200, 400)
-JUMPING_SURFACE_ICECREAM = pygame.transform.scale(pygame.image.load("icecream.png"), (200,400))
+
+#icecream
+cream = ice_cream(100,100)
+c_x, c_y = 200, 400
+STANDING_SURFACE_ICECREAM = pygame.transform.scale(pygame.image.load("icecream.png"), (20, 400))
+JUMPING_SURFACE_ICECREAM = pygame.transform.scale(pygame.image.load("icecream.png"), (20,400))
 
 
 font = pygame.font.SysFont('Arial', 40)
@@ -86,42 +100,38 @@ while stop == True:
                         print(jumping)
     if jumping:
         print("I can jump")
-        sm_y -= y_velocity
-        y_velocity -= gravity
-    if sm_y <= jump_height:
+        sm_y -= snowman_velocity
+        snowman_velocity -= gravity
+    if sm_y <= jump_height_sm:
         print("hell")
         jumping = False
-        sm_y = jump_height
+        sm_y = jump_height_sm
         s.rect = JUMPING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
                         # screen.blit(JUMPING_SURFACE_SNOWMAN, s.rect)
     else:
         s.rect = STANDING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
             # screen.blit(STANDING_SURFACE_SNOWMAN, s.rect)
-        if (events.type == pygame.MOUSEBUTTONDOWN and cream.rect.collidepoint(events.pos) and starting_menu == False):
+
+        if (events.type == pygame.MOUSEBUTTONDOWN and p.rect.collidepoint(events.pos) and starting_menu == False):
             print("User clicked something!")
-            icecream_page = True
-            if (icecream_page == True):
+            penguin_page = True
+            if (penguin_page == True):
                 if counts == 0:
-                    jumpings = True
+                    jump = True
                     counts += 1
-                    print(jumpings)
-    if jumpings:
+                    print(jump)
+    if jump:
         print("I can jump")
-        c_x -= y_velocity
-        y_velocity -= gravity
-    if c_x <= jump_height:
+        p_x -= p_velocity
+        p_velocity -= gravity
+    if p_x <= jump_height_p:
         print("ok")
-        jumpings = False
-        c_y = jump_height
-        cream.rect = JUMPING_SURFACE_
+        jump = False
+        p_y = jump_height_p
+        cream.rect = JUMPING_SURFACE_PENGUIN.get_rect(center=(c_x, c_y))
 
-
-
-
-
-
-
-
+    else:
+        cream.rect = STANDING_SURFACE_PENGUIN.get_rect(center=(c_x, c_y))
 
 
 
@@ -139,18 +149,23 @@ while stop == True:
     if starting_menu == False:
         screen.blit(picture, (0,0))
         screen.blit(s.image, s.rect)
-        screen.blit(cream.image, cream.rect)
+        # screen.blit(cream.image, cream.rect)
+        screen.blit(p.image, p.rect)
         # screen.blit(second_picture, (0,0))
 
-    if next_page == True:
+    if next_page == True or penguin_page == True:
         screen.blit(second_picture, (0,0))
         # screen.blit(s.image, s.rect)
-    if icecream_page == True:
-        screen.blit(second_picture, (0, 0))
-        # screen.blit(cream.image, cream.rect)
+
 
     if jumping == True and next_page == True:
         screen.blit(JUMPING_SURFACE_SNOWMAN, s.rect)
+
+    if jump == True and penguin_page == True:
+        screen.blit(JUMPING_SURFACE_PENGUIN, p.rect)
+
+    # if jump == True and icecream_page == True:
+    #     screen.blit(JUMPING_SURFACE_ICECREAM, cream.rect)
 
 
  # Update the game state
