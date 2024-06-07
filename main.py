@@ -30,18 +30,18 @@ button_surface = pygame.Surface((150, 50))
 button_rect_two = pygame.Rect(370, 250, 250, 100)
 button_surface_two = pygame.Surface((300, 100))
 
-p = penguins(200,400)
+p = penguins(500,500)
 p_x, p_y = 200, 400
-p_rect = pygame.Rect(370, 250, 250, 100)
+p_rect = pygame.Rect(370, 250, 200, 100)
 # snowman_rect = pygame.Rect(370, 250, 250, 100)
 STANDING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("Penguin.png"), (200,400))
-JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("Penguinjumping.png"), (200, 400))
+JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("Penguin.png"), (200, 400))
 penguin_page = False
 
 #snowman
-s = snowman(200,400)
-sm_x, sm_y = 200, 400
-snowman_rect = pygame.Rect(370, 250, 250, 100)
+s = snowman(400,500)
+sm_x, sm_y = 200, 600
+snowman_rect = pygame.Rect(370, 250, 200, 100)
 STANDING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200,400))
 JUMPING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200, 400))
 
