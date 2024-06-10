@@ -11,12 +11,16 @@ class penguins:
         self.data = .1
         self.current_direction = "right"
 
-
     def move_direction(self, direction):
-        if self.current_direction == "right" and direction == "left":
-            self.image = pygame.transform.flip(self.image, True, False)
-        if self.current_direction == "left" and direction == "right":
-            if self.image == "right":
-                self.current_direction == "right"
-                self.x = self.x + self.delta
-            self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
+        if direction == "right":
+            self.x = self.x + self.delta
+        self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
+        if direction == "left":
+            self.x = self.x - self.delta
+        self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
+        if direction == "down":
+            self.y = self.y + self.delta
+        self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
+        if direction == "up":
+            self.y = self.y - self.delta
+        self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])

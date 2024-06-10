@@ -30,12 +30,16 @@ button_surface = pygame.Surface((150, 50))
 button_rect_two = pygame.Rect(370, 250, 250, 100)
 button_surface_two = pygame.Surface((300, 100))
 
+platform = pygame.image.load("clover.png")
+clover = pygame.transform.scale(platform, (900,700))
+
 p = penguins(500,500)
 p_x, p_y = 200, 400
 p_rect = pygame.Rect(370, 250, 200, 100)
 # snowman_rect = pygame.Rect(370, 250, 250, 100)
-STANDING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("Penguin.png"), (200,400))
-JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("Penguin.png"), (200, 400))
+
+STANDING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
+JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
 penguin_page = False
 
 #snowman
@@ -43,13 +47,8 @@ s = snowman(400,500)
 sm_x, sm_y = 200, 600
 snowman_rect = pygame.Rect(370, 250, 200, 100)
 STANDING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200,400))
-JUMPING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200, 400))
+JUMPING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200,400))
 
-#icecream
-cream = ice_cream(100,100)
-c_x, c_y = 200, 400
-STANDING_SURFACE_ICECREAM = pygame.transform.scale(pygame.image.load("icecream.png"), (20, 400))
-JUMPING_SURFACE_ICECREAM = pygame.transform.scale(pygame.image.load("icecream.png"), (20,400))
 
 
 font = pygame.font.SysFont('Arial', 40)
@@ -66,27 +65,39 @@ end_text = "End"
 ending_message = font.render(end_text, True, (225, 255, 255))
 end_message_rect = pygame.Rect(400, 400, ending_message.get_width() + 8, ending_message.get_height() - 5)
 
-stop = True
+run = True
 starting_menu = True
 starting_button = False
 next_page = False
+game_over = False
 icecream_page = False
 count = 0
 counts = 0
-while stop == True:
+while run == True:
+    if not game_over:
+        keys = pygame.key.get_pressed()  # checking pressed keys
+        if keys[pygame.K_d]:
+            s.move_direction("right")
+        if keys[pygame.K_s]:
+            s.move_direction("down")
+        if keys[pygame.K_w]:
+            s.move_direction("up")
+        if keys[pygame.K_a]:
+            s.move_direction("left")
+        if keys[pygame.K_SPACE]:
+            s.move_direction("jump")
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
             pygame.quit()
             quit()
-
             # Check for the mouse button down event
         if events.type == pygame.MOUSEBUTTONDOWN and start_message_rect.collidepoint(events.pos):
             print("Start button clicked")
-            stop = True
+            run = True
             # starting_menu = False
         if events.type == pygame.MOUSEBUTTONDOWN and end_message_rect.collidepoint(events.pos):
             print("End button clicked")
-            stop = False
+            run = False
         if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
         if (events.type == pygame.MOUSEBUTTONDOWN and s.rect.collidepoint(events.pos) and starting_menu == False):
@@ -112,31 +123,10 @@ while stop == True:
         s.rect = STANDING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
             # screen.blit(STANDING_SURFACE_SNOWMAN, s.rect)
 
-        if (events.type == pygame.MOUSEBUTTONDOWN and p.rect.collidepoint(events.pos) and starting_menu == False):
-            print("User clicked something!")
-            penguin_page = True
-            if (penguin_page == True):
-                if counts == 0:
-                    jump = True
-                    counts += 1
-                    print(jump)
-    if jump:
-        print("I can jump")
-        p_x -= p_velocity
-        p_velocity -= gravity
-    if p_x <= jump_height_p:
-        print("ok")
-        jump = False
-        p_y = jump_height_p
-        cream.rect = JUMPING_SURFACE_PENGUIN.get_rect(center=(c_x, c_y))
-
-    else:
-        cream.rect = STANDING_SURFACE_PENGUIN.get_rect(center=(c_x, c_y))
-
 
 
  # Shwo the button text
-    if starting_menu == True and stop == True:
+    if starting_menu == True and run == True:
         screen.blit(title, (200,100))
         screen.blit(start_message, (390,200))
         start_message.get_rect().move(390, 200)
@@ -149,7 +139,6 @@ while stop == True:
     if starting_menu == False:
         screen.blit(picture, (0,0))
         screen.blit(s.image, s.rect)
-        # screen.blit(cream.image, cream.rect)
         screen.blit(p.image, p.rect)
         # screen.blit(second_picture, (0,0))
 
@@ -164,12 +153,14 @@ while stop == True:
     if jump == True and penguin_page == True:
         screen.blit(JUMPING_SURFACE_PENGUIN, p.rect)
 
-    # if jump == True and icecream_page == True:
-    #     screen.blit(JUMPING_SURFACE_ICECREAM, cream.rect)
+
 
 
  # Update the game state
     pygame.display.update()
+
+
+
 
 
 
