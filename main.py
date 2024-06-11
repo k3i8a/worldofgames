@@ -1,14 +1,15 @@
-
-
+import time
+import random
 import pygame
 from snowaman import snowman
-from icecream import ice_cream
+from clover import Clover
 from penguin import penguins
 
 display_width = 900
 display_height = 700
 screen = pygame.display.set_mode((display_width, display_height))
 
+stime = time.time()
 jump_height_sm = 20
 gravity = 1
 snowman_velocity = jump_height_sm
@@ -38,6 +39,7 @@ clover = pygame.transform.scale(platform, (900,700))
 p = penguins(500,500)
 p_rect = pygame.Rect(370, 250, 200, 100)
 
+c = Clover(200,85)
 
 STANDING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
 JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
@@ -69,10 +71,13 @@ starting_button = False
 next_page = False
 game_over = False
 icecream_page = False
-count = 0
-counts = 0
-
+clov = 0
+value = 0
 while run == True:
+    current_time = time.time()
+    if starting_menu != True:
+        timer = current_time - stime
+        times = 20 - timer
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
             pygame.quit()
@@ -102,13 +107,23 @@ while run == True:
                 s.move_direction("left", display_height, display_width)
             if keys[pygame.K_SPACE]:
                 s.move_direction("up", display_height, display_width)
+                if s.rect.colliderect(clover.rect):
+                    message = "Collision detected"
+                    display_message = font.render(message, True, (255, 255, 255))
+                    x_value = int(random.randint(0, 450))
+                    y_value = int(random.randint(0, 350))
+                    c.set_location(x_value, y_value)
+                    clov += 1
+                    value += 10
+                    if value >= 100 and times >= 0:
+                        game_over = True
+                    if value != 100 and times <= 0:
+                        game_over = True
+                else:
+                    message = "Collision not detected"
 
 
-
-
-
-
- # Shwo the button text
+    # Shwo the button text
     if starting_menu == True and run == True:
         screen.blit(title, (200,100))
         screen.blit(start_message, (390,200))
@@ -128,6 +143,7 @@ while run == True:
 
         screen.blit(second_picture, (0,0))
         screen.blit(s.image, s.rect)
+        screen.blit(c.image, c.rect)
 
 
 
