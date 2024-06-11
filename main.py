@@ -9,14 +9,7 @@ display_width = 900
 display_height = 700
 screen = pygame.display.set_mode((display_width, display_height))
 
-stime = time.time()
-jump_height_sm = 20
-gravity = 1
-snowman_velocity = jump_height_sm
-jump_height_p = 20
-p_velocity = jump_height_p
-jumping = False
-jump = False
+
 
 pygame.init()
 pygame.font.init()
@@ -39,7 +32,7 @@ clover = pygame.transform.scale(platform, (900,700))
 p = penguins(500,500)
 p_rect = pygame.Rect(370, 250, 200, 100)
 
-c = Clover(200,85)
+c = Clover(300,300)
 
 STANDING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
 JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
@@ -59,25 +52,51 @@ start_button = font.render('Start', True, (155, 155, 155))
 start_text = "Start"
 start_message = font.render(start_text, True, (225, 225, 225))
 start_message_rect = pygame.Rect(390, 200, start_message.get_width() + 8, start_message.get_height() - 5)
+lose = "You didn't win. Try again!"
+loser = font.render(lose, True, (225, 225, 225))
+win = "You have won!"
+ending = font.render(win, True, (225, 225, 225))
+
 
 
 end_text = "End"
 ending_message = font.render(end_text, True, (225, 255, 255))
 end_message_rect = pygame.Rect(400, 400, ending_message.get_width() + 8, ending_message.get_height() - 5)
 
+stime = time.time()
+jumpheight = 20
+gravity = 1
+velocity = jumpheight
+jumping = False
+jump = False
 run = True
 starting_menu = True
 starting_button = False
 next_page = False
 game_over = False
 icecream_page = False
-clov = 0
+cloves = 0
 value = 0
-while run == True:
-    current_time = time.time()
-    if starting_menu != True:
+
+score_points = font.render("Score: " + str(value), True, (225, 225, 225))
+
+while run == True and game_over == False:
+    if not game_over:
+        keys = pygame.key.get_pressed()  # checking pressed keys
+        if keys[pygame.K_d]:
+            s.move_direction("right", display_height, display_width)
+        if keys[pygame.K_s]:
+            s.move_direction("down", display_height, display_width)
+        if keys[pygame.K_w]:
+            s.move_direction("up", display_height, display_width)
+        if keys[pygame.K_a]:
+            s.move_direction("left", display_height, display_width)
+        if keys[pygame.K_SPACE]:
+            s.move_direction("up", display_height, display_width)
+        current_time = time.time()
         timer = current_time - stime
         times = 20 - timer
+    start_time = font.render("Total time: " + str(round(times)) + " s", True, (225,225,225))
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
             pygame.quit()
@@ -92,35 +111,48 @@ while run == True:
             run = False
         if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
-        # if (events.type == pygame.MOUSEBUTTONDOWN and s.rect.collidepoint(events.pos) and starting_menu == False):
-        #     next_page = True
         if starting_menu == False:
-            print(False)
             keys = pygame.key.get_pressed()  # checking pressed keys
             if keys[pygame.K_d]:
                 s.move_direction("right", display_height, display_width)
-            if keys[pygame.K_s]:
-                s.move_direction("down", display_height, display_width)
-            if keys[pygame.K_w]:
-                s.move_direction("up", display_height, display_width)
             if keys[pygame.K_a]:
                 s.move_direction("left", display_height, display_width)
-            if keys[pygame.K_SPACE]:
-                s.move_direction("up", display_height, display_width)
-                if s.rect.colliderect(clover.rect):
-                    message = "Collision detected"
-                    display_message = font.render(message, True, (255, 255, 255))
-                    x_value = int(random.randint(0, 450))
-                    y_value = int(random.randint(0, 350))
-                    c.set_location(x_value, y_value)
-                    clov += 1
-                    value += 10
-                    if value >= 100 and times >= 0:
-                        game_over = True
-                    if value != 100 and times <= 0:
-                        game_over = True
-                else:
-                    message = "Collision not detected"
+            if events.type == pygame.KEYDOWN:
+                if events.key == pygame.K_SPACE:
+                    jump = True
+
+            if jump:
+                s.y -= velocity
+                velocity -= gravity
+                if velocity < -jumpheight:
+                    jump = False
+                    velocity = jumpheight
+                s.move(s.x, s.y)
+                # screen.blit(s.image, s.rect)
+            else:
+                s.move(s.x, s.y)
+                # screen.blit(s.image, s.rect)
+
+        if starting_menu == False and s.rect.colliderect(c.rect):
+            message = "Collision detected"
+            display_message = font.render(message, True, (255, 255, 255))
+            x_value = int(random.randint(0, 450))
+            y_value = int(random.randint(0, 350))
+            c.set_location(x_value, y_value)
+            cloves += 1
+            value += 10
+            if value >= 100 and times >= 0:
+                game_over = True
+                win = "You have won!"
+                ending = font.render(win, True, (225, 225, 225))
+            if value != 100 and times <= 0:
+                game_over = True
+                lose = "You didn't win. Try again!"
+                loser = font.render(lose, True, (225, 225, 225))
+            else:
+                message = "Collision not detected"
+                display_message = font.render(message, True, (255, 255, 255))
+            score_points = font.render("Score: " + str(value), True, (225, 225, 225))
 
 
     # Shwo the button text
@@ -133,17 +165,21 @@ while run == True:
         screen.blit(ending_message, (400, 400))
         ending_message.get_rect().move(400, 400)
         pygame.draw.rect(screen, (255, 255, 255), end_message_rect, 2)
+        screen.blit(score_points, (450, 350))
 
     if starting_menu == False:
         screen.blit(picture, (0,0))
         screen.blit(s.image, s.rect)
         screen.blit(p.image, p.rect)
-        # screen.blit(second_picture, (0,0))
-
-
         screen.blit(second_picture, (0,0))
         screen.blit(s.image, s.rect)
         screen.blit(c.image, c.rect)
+    if value >= 100 and times >= 0 and game_over == True:
+        screen.blit(ending,(25,150))
+    if value != 100 and times <= 0 and game_over == True:
+        screen.blit(loser, (25,150))
+
+
 
 
 

@@ -33,24 +33,25 @@ class penguins:
             self.y = self.y + self.delta
         self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
 
-        if direction == "jump" and key[pygame.K_SPACE]:
-            self.jumping = True
-            self.velocity = -30
-            self.velocity += gravity
-            coy += self.velocity
+        # if direction == "jump" and key[pygame.K_SPACE]:
+        #     self.jumping = True
+        #     self.velocity = -30
+        #     self.velocity += gravity
+        #     coy += self.velocity
+        #
+        # if self.rect.left + cox < 0:
+        #     cox = -self.rect.left
+        # elif self.rect.right + cox > display_width:
+        #     cox = display_width - self.rect.right
+        #
+        # if self.rect.bottom + coy > display_height:
+        #     self.velocity = 0
+        #     self.jumping = False
+        #     coy = (display_width) - self.rect.bottom
+        #
+        # self.rect.x += cox
+        # self.rect.y += coy
 
-        if self.rect.left + cox < 0:
-            cox = -self.rect.left
-        elif self.rect.right + cox > display_width:
-            cox = display_width - self.rect.right
-
-        if self.rect.bottom + coy > display_height:
-            self.velocity = 0
-            self.jumping = False
-            coy = (display_width) - self.rect.bottom
-
-        self.rect.x += cox
-        self.rect.y += coy
 
 
 
