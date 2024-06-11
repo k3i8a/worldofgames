@@ -1,3 +1,5 @@
+
+
 import pygame
 from snowaman import snowman
 from icecream import ice_cream
@@ -34,20 +36,16 @@ platform = pygame.image.load("clover.png")
 clover = pygame.transform.scale(platform, (900,700))
 
 p = penguins(500,500)
-p_x, p_y = 200, 400
 p_rect = pygame.Rect(370, 250, 200, 100)
-# snowman_rect = pygame.Rect(370, 250, 250, 100)
+
 
 STANDING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
 JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
 penguin_page = False
 
 #snowman
-s = snowman(400,500)
-sm_x, sm_y = 200, 600
-snowman_rect = pygame.Rect(370, 250, 200, 100)
-STANDING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200,400))
-JUMPING_SURFACE_SNOWMAN = pygame.transform.scale(pygame.image.load("snowman.png"), (200,400))
+s = snowman(400,200)
+s_rect = pygame.Rect(370, 250, 250, 100)
 
 
 
@@ -73,19 +71,8 @@ game_over = False
 icecream_page = False
 count = 0
 counts = 0
+
 while run == True:
-    if not game_over:
-        keys = pygame.key.get_pressed()  # checking pressed keys
-        if keys[pygame.K_d]:
-            s.move_direction("right")
-        if keys[pygame.K_s]:
-            s.move_direction("down")
-        if keys[pygame.K_w]:
-            s.move_direction("up")
-        if keys[pygame.K_a]:
-            s.move_direction("left")
-        if keys[pygame.K_SPACE]:
-            s.move_direction("jump")
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
             pygame.quit()
@@ -100,28 +87,24 @@ while run == True:
             run = False
         if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
-        if (events.type == pygame.MOUSEBUTTONDOWN and s.rect.collidepoint(events.pos) and starting_menu == False):
-            print("User clicked something!")
-            next_page = True
-            if (next_page == True):
-                    if count == 0:
-                        jumping = True
-                        count += 1
-                    # jumping = True
-                        print(jumping)
-    if jumping:
-        print("I can jump")
-        sm_y -= snowman_velocity
-        snowman_velocity -= gravity
-    if sm_y <= jump_height_sm:
-        print("hell")
-        jumping = False
-        sm_y = jump_height_sm
-        s.rect = JUMPING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
-                        # screen.blit(JUMPING_SURFACE_SNOWMAN, s.rect)
-    else:
-        s.rect = STANDING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
-            # screen.blit(STANDING_SURFACE_SNOWMAN, s.rect)
+        # if (events.type == pygame.MOUSEBUTTONDOWN and s.rect.collidepoint(events.pos) and starting_menu == False):
+        #     next_page = True
+        if starting_menu == False:
+            print(False)
+            keys = pygame.key.get_pressed()  # checking pressed keys
+            if keys[pygame.K_d]:
+                s.move_direction("right", display_height, display_width)
+            if keys[pygame.K_s]:
+                s.move_direction("down", display_height, display_width)
+            if keys[pygame.K_w]:
+                s.move_direction("up", display_height, display_width)
+            if keys[pygame.K_a]:
+                s.move_direction("left", display_height, display_width)
+            if keys[pygame.K_SPACE]:
+                s.move_direction("up", display_height, display_width)
+
+
+
 
 
 
@@ -142,17 +125,9 @@ while run == True:
         screen.blit(p.image, p.rect)
         # screen.blit(second_picture, (0,0))
 
-    if next_page == True or penguin_page == True:
+
         screen.blit(second_picture, (0,0))
-        # screen.blit(s.image, s.rect)
-
-
-    if jumping == True and next_page == True:
-        screen.blit(JUMPING_SURFACE_SNOWMAN, s.rect)
-
-    if jump == True and penguin_page == True:
-        screen.blit(JUMPING_SURFACE_PENGUIN, p.rect)
-
+        screen.blit(s.image, s.rect)
 
 
 
@@ -162,7 +137,26 @@ while run == True:
 
 
 
-
+#         if (next_page == True):
+    #                 if count == 0:
+    #                     jumping = True
+    #                     count += 1
+    #                 # jumping = True
+    #                     print(jumping)
+    # if jumping:
+    #     print("I can jump")
+    #     sm_y -= snowman_velocity
+    #     snowman_velocity -= gravity
+    # if sm_y <= jump_height_sm:
+    #     print("hell")
+    #     jumping = False
+    #     sm_y = jump_height_sm
+    #     s.rect = JUMPING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
+    #                     # screen.blit(JUMPING_SURFACE_SNOWMAN, s.rect)
+    # else:
+    #     s.rect = STANDING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
+    #         # screen.blit(STANDING_SURFACE_SNOWMAN, s.rect)
+    #
 
 
 
