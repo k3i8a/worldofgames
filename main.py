@@ -44,7 +44,7 @@ p = penguins(500,400)
 
 c = Clover(100,130)
 
-sf = Snowflake(100, 100)
+sf = Snowflake(180, 150)
 #snowman
 s = snowman(400,450)
 
@@ -140,7 +140,7 @@ while run == True:
     if s.rect.colliderect(p.rect) and starting_menu == False:
         x_value = int(random.randint(0, display_width - p.image_size[0]))
         p.move(x_value, p.y)
-        score -= 5
+        score -= 25
 
 
     if s.rect.colliderect(c.rect) and starting_menu == False:
