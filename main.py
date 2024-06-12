@@ -13,6 +13,7 @@ screen = pygame.display.set_mode((display_width, display_height))
 
 pygame.init()
 pygame.font.init()
+clock = pygame.time.Clock()
 
 background = pygame.image.load("village.jpg")
 picture = pygame.transform.scale(background, (900, 700))
@@ -32,8 +33,8 @@ clover = pygame.transform.scale(platform, (900,700))
 p = penguins(500,500)
 p_rect = pygame.Rect(370, 250, 200, 100)
 
-c = Clover(300,300)
-
+c = Clover(100,100)
+c_rect = pygame.Rect(370, 200, 200, 100)
 STANDING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
 JUMPING_SURFACE_PENGUIN = pygame.transform.scale(pygame.image.load("penguin.png"), (200,400))
 penguin_page = False
@@ -81,6 +82,7 @@ value = 0
 score_points = font.render("Score: " + str(value), True, (225, 225, 225))
 
 while run == True and game_over == False:
+    current_time = time.time()
     if not game_over:
         keys = pygame.key.get_pressed()  # checking pressed keys
         if keys[pygame.K_d]:
@@ -92,10 +94,10 @@ while run == True and game_over == False:
         if keys[pygame.K_a]:
             s.move_direction("left", display_height, display_width)
         if keys[pygame.K_SPACE]:
-            s.move_direction("up", display_height, display_width)
-        current_time = time.time()
+            s.move_direction("jump", display_height, display_width)
         timer = current_time - stime
-        times = 20 - timer
+    if not game_over:
+        times = 10 - timer
     start_time = font.render("Total time: " + str(round(times)) + " s", True, (225,225,225))
     for events in pygame.event.get():
         if events.type == pygame.QUIT:
@@ -111,29 +113,29 @@ while run == True and game_over == False:
             run = False
         if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
+    if starting_menu == False:
+        keys = pygame.key.get_pressed()  # checking pressed keys
+        if keys[pygame.K_d]:
+            s.move_direction("right", display_height, display_width)
+        if keys[pygame.K_a]:
+            s.move_direction("left", display_height, display_width)
+        if events.type == pygame.KEYDOWN:
+            if events.key == pygame.K_SPACE:
+                jump = True
+
+        if jump:
+            s.y -= velocity
+            velocity -= gravity
+            if velocity < -jumpheight:
+                jump = False
+                velocity = jumpheight
+            s.move(s.x, s.y)
+            screen.blit(s.image, s.rect)
+        else:
+            s.move(s.x, s.y)
+            screen.blit(s.image, s.rect)
+    if s.rect.colliderect(c_rect):
         if starting_menu == False:
-            keys = pygame.key.get_pressed()  # checking pressed keys
-            if keys[pygame.K_d]:
-                s.move_direction("right", display_height, display_width)
-            if keys[pygame.K_a]:
-                s.move_direction("left", display_height, display_width)
-            if events.type == pygame.KEYDOWN:
-                if events.key == pygame.K_SPACE:
-                    jump = True
-
-            if jump:
-                s.y -= velocity
-                velocity -= gravity
-                if velocity < -jumpheight:
-                    jump = False
-                    velocity = jumpheight
-                s.move(s.x, s.y)
-                # screen.blit(s.image, s.rect)
-            else:
-                s.move(s.x, s.y)
-                # screen.blit(s.image, s.rect)
-
-        if starting_menu == False and s.rect.colliderect(c.rect):
             message = "Collision detected"
             display_message = font.render(message, True, (255, 255, 255))
             x_value = int(random.randint(0, 450))
@@ -141,18 +143,18 @@ while run == True and game_over == False:
             c.set_location(x_value, y_value)
             cloves += 1
             value += 10
-            if value >= 100 and times >= 0:
-                game_over = True
-                win = "You have won!"
-                ending = font.render(win, True, (225, 225, 225))
-            if value != 100 and times <= 0:
-                game_over = True
-                lose = "You didn't win. Try again!"
-                loser = font.render(lose, True, (225, 225, 225))
-            else:
-                message = "Collision not detected"
-                display_message = font.render(message, True, (255, 255, 255))
-            score_points = font.render("Score: " + str(value), True, (225, 225, 225))
+        if value >= 100 and times >= 0:
+            game_over = True
+            win = "You have won!"
+            ending = font.render(win, True, (225, 225, 225))
+        if value != 100 and times <= 0:
+            game_over = True
+            lose = "You didn't win. Try again!"
+            loser = font.render(lose, True, (225, 225, 225))
+        else:
+            message = "Collision not detected"
+            display_message = font.render(message, True, (255, 255, 255))
+        score_points = font.render("Score: " + str(value), True, (225, 225, 225))
 
 
     # Shwo the button text
@@ -165,7 +167,6 @@ while run == True and game_over == False:
         screen.blit(ending_message, (400, 400))
         ending_message.get_rect().move(400, 400)
         pygame.draw.rect(screen, (255, 255, 255), end_message_rect, 2)
-        screen.blit(score_points, (450, 350))
 
     if starting_menu == False:
         screen.blit(picture, (0,0))
@@ -174,9 +175,10 @@ while run == True and game_over == False:
         screen.blit(second_picture, (0,0))
         screen.blit(s.image, s.rect)
         screen.blit(c.image, c.rect)
-    if value >= 100 and times >= 0 and game_over == True:
+        screen.blit(score_points, (450, 350))
+    if value >= 100 and times >= 0 and game_over == True and starting_menu == False:
         screen.blit(ending,(25,150))
-    if value != 100 and times <= 0 and game_over == True:
+    if value != 100 and times <= 0 and game_over == True and starting_menu == False:
         screen.blit(loser, (25,150))
 
 
@@ -185,31 +187,4 @@ while run == True and game_over == False:
 
  # Update the game state
     pygame.display.update()
-
-
-
-
-#         if (next_page == True):
-    #                 if count == 0:
-    #                     jumping = True
-    #                     count += 1
-    #                 # jumping = True
-    #                     print(jumping)
-    # if jumping:
-    #     print("I can jump")
-    #     sm_y -= snowman_velocity
-    #     snowman_velocity -= gravity
-    # if sm_y <= jump_height_sm:
-    #     print("hell")
-    #     jumping = False
-    #     sm_y = jump_height_sm
-    #     s.rect = JUMPING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
-    #                     # screen.blit(JUMPING_SURFACE_SNOWMAN, s.rect)
-    # else:
-    #     s.rect = STANDING_SURFACE_SNOWMAN.get_rect(center=(sm_x, sm_y))
-    #         # screen.blit(STANDING_SURFACE_SNOWMAN, s.rect)
-    #
-
-
-
-
+    clock.tick(60)

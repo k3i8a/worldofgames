@@ -69,6 +69,7 @@ class snowman:
             self.velocity = 0
             self.jumping = False
             coy = (display_width) - self.rect.bottom
+
         self.rect.x += cox
         self.rect.y += coy
 
