@@ -113,7 +113,8 @@ while run == True and game_over == False:
             run = False
         if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
-    if starting_menu == False:
+            next_page = True
+    if next_page == True:
         keys = pygame.key.get_pressed()  # checking pressed keys
         if keys[pygame.K_d]:
             s.move_direction("right", display_height, display_width)
@@ -134,21 +135,33 @@ while run == True and game_over == False:
         else:
             s.move(s.x, s.y)
             screen.blit(s.image, s.rect)
-    if s.rect.colliderect(c_rect):
+    if s.rect.colliderect(p.rect):
         if starting_menu == False:
+            p.move_direction(p.x, p.y)
+            value -= 10
+            cloves += 1
+            x_value = int(random.randint(0, 450))
+            y_value = int(random.randint(0, 350))
+            c.set_location(x_value, y_value)
+            print(value)
+            print(cloves)
+    if starting_menu == False:
+        if s.rect.colliderect(c_rect):
+            cloves += 1
+            value += 10
             message = "Collision detected"
             display_message = font.render(message, True, (255, 255, 255))
             x_value = int(random.randint(0, 450))
             y_value = int(random.randint(0, 350))
             c.set_location(x_value, y_value)
-            cloves += 1
-            value += 10
-        if value >= 100 and times >= 0:
+        if value >= 1000 and times >= 0:
             game_over = True
+            run = False
             win = "You have won!"
             ending = font.render(win, True, (225, 225, 225))
-        if value != 100 and times <= 0:
+        if value != 1000 and times <= 0:
             game_over = True
+            run = False
             lose = "You didn't win. Try again!"
             loser = font.render(lose, True, (225, 225, 225))
         else:
@@ -175,6 +188,7 @@ while run == True and game_over == False:
         screen.blit(second_picture, (0,0))
         screen.blit(s.image, s.rect)
         screen.blit(c.image, c.rect)
+        screen.blit(p.image, p.rect)
         screen.blit(score_points, (450, 350))
     if value >= 100 and times >= 0 and game_over == True and starting_menu == False:
         screen.blit(ending,(25,150))
