@@ -39,7 +39,7 @@ platform = pygame.image.load("clover.png")
 clover = pygame.transform.scale(platform, (900,700))
 
 
-p = penguins(500,400)
+p = penguins(0,400)
 
 
 c = Clover(100,130)
@@ -84,7 +84,7 @@ cloves = 0
 score = 0
 end = True
 
-score_points = font.render("Score: " + str(score), True, (225, 225, 225))
+score_points = font.render("Score: " + str(score), True, (0, 0, 0))
 
 
 while run == True:
@@ -138,6 +138,7 @@ while run == True:
 
 
     if s.rect.colliderect(p.rect) and starting_menu == False:
+        print('hit penguin')
         x_value = int(random.randint(0, display_width - p.image_size[0]))
         p.move(x_value, p.y)
         score -= 25
