@@ -65,9 +65,9 @@ ending_message = font.render(end_text, True, (225, 255, 255))
 end_message_rect = pygame.Rect(400, 400, ending_message.get_width() + 8, ending_message.get_height() - 5)
 
 stime = time.time()
-jumpheight = 20
+jumpheights = 20
 gravity = 1
-velocity = jumpheight
+velocity = jumpheights
 jumping = False
 jump = False
 run = True
@@ -113,13 +113,13 @@ while run == True and game_over == False:
             run = False
         if events.type == pygame.MOUSEBUTTONDOWN and (start_message_rect.collidepoint(events.pos) or end_message_rect.collidepoint(events.pos)):
             starting_menu = False
-            next_page = True
-    if next_page == True:
+    if starting_menu == True:
         keys = pygame.key.get_pressed()  # checking pressed keys
         if keys[pygame.K_d]:
             s.move_direction("right", display_height, display_width)
         if keys[pygame.K_a]:
             s.move_direction("left", display_height, display_width)
+
         if events.type == pygame.KEYDOWN:
             if events.key == pygame.K_SPACE:
                 jump = True
@@ -127,48 +127,49 @@ while run == True and game_over == False:
         if jump:
             s.y -= velocity
             velocity -= gravity
-            if velocity < -jumpheight:
+            if velocity < -jumpheights:
                 jump = False
-                velocity = jumpheight
+                velocity = jumpheights
             s.move(s.x, s.y)
             screen.blit(s.image, s.rect)
         else:
             s.move(s.x, s.y)
             screen.blit(s.image, s.rect)
-    if s.rect.colliderect(p.rect):
-        if starting_menu == False:
-            p.move_direction(p.x, p.y)
-            value -= 10
-            cloves += 1
-            x_value = int(random.randint(0, 450))
-            y_value = int(random.randint(0, 350))
-            c.set_location(x_value, y_value)
-            print(value)
-            print(cloves)
-    if starting_menu == False:
-        if s.rect.colliderect(c_rect):
-            cloves += 1
-            value += 10
-            message = "Collision detected"
-            display_message = font.render(message, True, (255, 255, 255))
-            x_value = int(random.randint(0, 450))
-            y_value = int(random.randint(0, 350))
-            c.set_location(x_value, y_value)
-        if value >= 1000 and times >= 0:
-            game_over = True
-            run = False
-            win = "You have won!"
-            ending = font.render(win, True, (225, 225, 225))
-        if value != 1000 and times <= 0:
-            game_over = True
-            run = False
-            lose = "You didn't win. Try again!"
-            loser = font.render(lose, True, (225, 225, 225))
-        else:
-            message = "Collision not detected"
-            display_message = font.render(message, True, (255, 255, 255))
-        score_points = font.render("Score: " + str(value), True, (225, 225, 225))
 
+    # if s.rect.colliderect(p.rect):
+    #     if starting_menu == False:
+    #         p.move_direction(p.x, p.y)
+    #         value -= 10
+    #         cloves += 1
+    #         x_value = int(random.randint(0, 450))
+    #         y_value = int(random.randint(0, 350))
+    #         c.set_location(x_value, y_value)
+    #         print(value)
+    #         print(cloves)
+    # if  s.rect.colliderect(c_rect):
+    #     if starting_menu == False:
+    #         message = "Collision detected"
+    #         display_message = font.render(message, True, (255, 255, 255))
+    #         x_value = int(random.randint(0, 450))
+    #         y_value = int(random.randint(0, 350))
+    #         c.set_location(x_value, y_value)
+    #         cloves += 1
+    #         value += 10
+    #     if value >= 100 and times >= 0:
+    #         game_over = True
+    #         run = False
+    #         win = "You have won!"
+    #         ending = font.render(win, True, (225, 225, 225))
+    #     if value != 100 and times <= 0:
+    #         game_over = True
+    #         run = False
+    #         lose = "You didn't win. Try again!"
+    #         loser = font.render(lose, True, (225, 225, 225))
+    #     else:
+    #         message = "Collision not detected"
+    #         display_message = font.render(message, True, (255, 255, 255))
+    #     score_points = font.render("Score: " + str(value), True, (225, 225, 225))
+    #
 
     # Shwo the button text
     if starting_menu == True and run == True:
